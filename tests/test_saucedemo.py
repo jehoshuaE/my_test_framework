@@ -2,6 +2,7 @@ import unittest
 from utils.browser import get_driver
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
+from pages.checkout_page import CheckoutPage
 
 class SauceDemoTests(unittest.TestCase):
     def setUp(self):
@@ -9,6 +10,7 @@ class SauceDemoTests(unittest.TestCase):
         self.driver.get('https://www.saucedemo.com/')
         self.login_page = LoginPage(self.driver)
         self.inventory_page = InventoryPage(self.driver)
+        self.checkout_page = CheckoutPage(self.driver)
 
     def test_username_required_error(self):
         self.login_page.login(password='secret_sauce')
@@ -47,9 +49,9 @@ class SauceDemoTests(unittest.TestCase):
 
     def test_checkout(self):
         self.login_page.login(username='standard_user', password='secret_sauce')
-        self.inventory_page.add_to_cart()
-        # Checkout logic can be implemented similarly by navigating to the checkout page and asserting.
+        self.inventory_page.add_to_cart_backpack_checkout()
         self.assertEqual(self.inventory_page.get_cart_count(), 1)
+        self.checkout_page.checkout(firstname='Jehoshua', lastname='Elen', postalCode='1406')
 
     def tearDown(self):
         self.driver.quit()
